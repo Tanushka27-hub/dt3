@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager - Time & Task Organizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 14px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .task-list {
+      margin-top: 30px;
+    }
+    .task {
+      background-color: #fff;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .high { background-color: #ffcccc; }
+    .medium { background-color: #ffffcc; }
+    .low { background-color: #ccffcc; }
+    .task-name {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .due-date {
+      font-size: 14px;
+      color: #888;
+    }
+    .priority {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .mark-complete {
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .mark-complete:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Task Manager - Time & Task Organizer</h1>
+    <input type="text" id="taskName" placeholder="Enter task description" />
+    <input type="datetime-local" id="dueDate" />
+    <select id="priority">
+      <option value="high">High Priority</option>
+      <option value="medium">Medium Priority</option>
+      <option value="low">Low Priority</option>
+    </select>
+    <select id="category">
+      <option value="assignment">Assignment</option>
+      <option value="meeting">Meeting</option>
+      <option value="project">Project</option>
+      <option value="personal">Personal</option>
+    </select>
+    <button onclick="addTask()">Add Task</button>
+
+    <div class="task-list" id="taskList">
+      <h3>Your Tasks</h3>
+    </div>
+  </div>
+
+  <script>
+    function addTask() {
+      const taskName = document.getElementById('taskName').value;
+      const dueDate = document.getElementById('dueDate').value;
+      const priority = document.getElementById('priority').value;
+      const category = document.getElementById('category').value;
+
+      if (taskName && dueDate && priority && category) {
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add('task', priority);
+
+        taskDiv.innerHTML = `
+          <div>
+            <div class="task-name">${taskName}</div>
+            <div class="due-date">Due: ${new Date(dueDate).toLocaleString()}</div>
+            <div class="priority">Priority: ${priority.charAt(0).toUpperCase() + priority.slice(1)}</div>
+            <div class="category">Category: ${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+          </div>
+          <button class="mark-complete" onclick="markComplete(this)">Mark as Complete</button>
+        `;
+
+        document.getElementById('taskList').appendChild(taskDiv);
+
+        // Clear input fields after adding the task
+        document.getElementById('taskName').value = '';
+        document.getElementById('dueDate').value = '';
+      } else {
+        alert("Please fill all fields.");
+      }
+    }
+
+    function markComplete(button) {
+      const task = button.parentElement;
+      task.style.textDecoration = 'line-through';
+      task.querySelector('.mark-complete').disabled = true;
+      task.querySelector('.mark-complete').style.backgroundColor = '#ddd';
+      task.querySelector('.mark-complete').style.cursor = 'not-allowed';
+      button.innerHTML = 'Completed';
+    }
+  </script>
+</body>
+</html>
